@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dados Formulário de Prestação de Serviços e Fornecedores</title>
+  <meta name="description" content="Formulário de cadastro para prestadores de serviço e fornecedores.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#1f3a5f">
+  <meta property="og:title" content="Dados Formulário de Prestação de Serviços e Fornecedores">
+  <meta property="og:description" content="Preencha seus dados e anexe os documentos para a contratação.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231f3a5f'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11.5' stroke='white' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f3f4f6;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #5f6673;
+      --border: #c9ced6;
+      --accent: #1f3a5f;
+      --accent-hover: #162c48;
+      --accent-soft: #eef2f7;
+      --error: #b42318;
+      --radius: 10px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+    .container { max-width: 760px; margin: 0 auto; padding: 32px 16px 64px; }
+
+    .topo, .secao, .obrigado {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+    .topo { border-top: 6px solid var(--accent); }
+    .topo h1 { font-size: 1.4rem; font-weight: 600; margin: 0 0 8px; line-height: 1.3; }
+    .topo p { margin: 0; color: var(--muted); font-size: .9rem; }
+    .obrig { color: var(--error); }
+
+    .secao h2 {
+      font-size: 1.05rem; font-weight: 600; color: var(--accent);
+      margin: 0 0 16px; padding-bottom: 10px; border-bottom: 1px solid #e5e7eb;
+    }
+    .secao h2 small {
+      display: block; font-size: .78rem; font-weight: 500; color: var(--muted);
+      text-transform: uppercase; letter-spacing: .04em; margin-bottom: 2px;
+    }
+
+    .aviso {
+      background: var(--accent-soft);
+      border-left: 4px solid var(--accent);
+      border-radius: 6px;
+      padding: 12px 14px;
+      font-size: .9rem;
+      margin-bottom: 18px;
+    }
+    .aviso ol { margin: 8px 0 0; padding-left: 20px; }
+    .aviso li { margin-bottom: 2px; }
+    .aviso a { color: var(--accent); font-weight: 500; word-break: break-all; }
+    .aviso-config { border-left-color: var(--error); background: #fdf1f0; }
+
+    .grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px 14px; }
+    .c6 { grid-column: span 6; } .c4 { grid-column: span 4; } .c3 { grid-column: span 3; }
+    .c2 { grid-column: span 2; }
+
+    .rotulo { display: block; font-weight: 500; font-size: .9rem; margin-bottom: 6px; }
+    .ajuda { display: block; color: var(--muted); font-size: .8rem; margin-top: 4px; }
+
+    input[type="text"], input[type="email"], input[type="tel"], select {
+      width: 100%; padding: 10px 12px;
+      border: 1px solid var(--border); border-radius: 6px;
+      font: inherit; color: inherit; background: #fff;
+      transition: border-color .15s;
+    }
+    select {
+      appearance: none;
+      background-image: linear-gradient(45deg, transparent 50%, #6b7280 50%), linear-gradient(135deg, #6b7280 50%, transparent 50%);
+      background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%;
+      background-size: 5px 5px; background-repeat: no-repeat; padding-right: 34px;
+    }
+    input:focus, select:focus, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+
+    .tel { display: grid; grid-template-columns: 116px 80px 1fr; gap: 8px; }
+    .combo-lista.larga { right: auto; width: 300px; max-width: calc(100vw - 48px); }
+    .combo-lista.larga li .cod { min-width: 48px; }
+
+    /* Data de nascimento: digitação + calendário */
+    .campo-data { position: relative; }
+    .campo-data input[type="text"] { padding-right: 46px; }
+    .btn-cal {
+      position: absolute; top: 1px; right: 1px; bottom: 1px; width: 42px;
+      border: 0; border-left: 1px solid var(--border); border-radius: 0 5px 5px 0;
+      background: #f8f9fb; color: var(--accent); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .btn-cal:hover { background: var(--accent-soft); }
+    .picker-oculto {
+      position: absolute; right: 0; bottom: 0; width: 42px; height: 1px;
+      opacity: 0; pointer-events: none; border: 0; padding: 0;
+    }
+
+    /* Campo com prefixo (+55 na chave PIX celular) */
+    .com-prefixo { display: flex; }
+    .com-prefixo .prefixo {
+      display: flex; align-items: center; padding: 0 12px;
+      border: 1px solid var(--border); border-right: 0; border-radius: 6px 0 0 6px;
+      background: #f8f9fb; color: var(--muted); font-weight: 500;
+    }
+    .com-prefixo input { border-radius: 0 6px 6px 0; }
+
+    /* Busca de banco */
+    .combo { position: relative; }
+    .combo-lista {
+      position: absolute; z-index: 20; left: 0; right: 0; top: calc(100% + 4px);
+      max-height: 280px; overflow-y: auto; margin: 0; padding: 4px 0; list-style: none;
+      background: #fff; border: 1px solid var(--border); border-radius: 8px;
+      box-shadow: 0 8px 24px rgba(17, 24, 39, .12);
+    }
+    .combo-lista li { display: flex; gap: 12px; padding: 9px 12px; cursor: pointer; font-size: .92rem; }
+    .combo-lista li .cod { font-variant-numeric: tabular-nums; font-weight: 600; color: var(--accent); min-width: 32px; }
+    .combo-lista li[aria-selected="true"], .combo-lista li:hover { background: var(--accent-soft); }
+    .combo-lista li.info { cursor: default; color: var(--muted); font-size: .85rem; background: none; }
+    .combo-lista mark { background: #fde9b5; color: inherit; border-radius: 2px; }
+
+    .opcoes { display: flex; flex-direction: column; gap: 2px; }
+    .opcoes.linha { flex-direction: row; flex-wrap: wrap; gap: 4px 24px; }
+    .opcoes label { display: flex; align-items: center; gap: 10px; padding: 6px 0; cursor: pointer; }
+    .opcoes input { width: 18px; height: 18px; accent-color: var(--accent); margin: 0; }
+
+    .anexo { border: 1px dashed var(--border); border-radius: 8px; padding: 14px; background: #fafafa; }
+    .anexo input[type="file"] { width: 100%; font: inherit; font-size: .88rem; }
+    .anexo input[type="file"]::file-selector-button {
+      font: inherit; font-size: .85rem; font-weight: 500;
+      padding: 8px 14px; margin-right: 12px;
+      border: 1px solid var(--accent); border-radius: 6px;
+      background: #fff; color: var(--accent); cursor: pointer;
+    }
+
+    .validado input:invalid, .validado select:invalid { border-color: var(--error); }
+    .validado .anexo:has(input:invalid) { border-color: var(--error); }
+
+    .armadilha { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+
+    .acoes { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 8px; }
+    .btn {
+      background: var(--accent); color: #fff; border: 0; border-radius: 6px;
+      padding: 12px 32px; font: inherit; font-weight: 600; cursor: pointer;
+    }
+    .btn:hover { background: var(--accent-hover); }
+    .btn:disabled { opacity: .6; cursor: wait; }
+    .status { font-size: .9rem; color: var(--muted); }
+    .status.erro { color: var(--error); }
+
+    .oculto { display: none !important; }
+
+    .obrigado { text-align: center; padding: 48px 24px; }
+    .obrigado .icone {
+      width: 56px; height: 56px; border-radius: 50%; margin: 0 auto 16px;
+      background: var(--accent-soft); color: var(--accent);
+      display: flex; align-items: center; justify-content: center; font-size: 28px;
+    }
+    .obrigado p { font-size: 1.05rem; max-width: 480px; margin: 0 auto; }
+
+    @media (max-width: 600px) {
+      .container { padding: 16px 12px 48px; }
+      .topo, .secao { padding: 18px; }
+      .grid > * { grid-column: span 6 !important; }
+      .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+<main class="container">
+
+  <form id="form" novalidate>
+    <header class="topo">
+      <h1>Dados Formulário de Prestação de Serviços e Fornecedores</h1>
+      <p><span class="obrig">*</span> Indica campo obrigatório</p>
+    </header>
+
+    <div class="aviso aviso-config oculto" id="avisoConfig" role="alert">
+      <strong>Formulário ainda não conectado.</strong> Cole a URL do App da Web do Apps Script na constante <code>URL_APPS_SCRIPT</code> deste arquivo.
+    </div>
+
+    <!-- Campo-armadilha contra robôs (invisível para pessoas) -->
+    <div class="armadilha" aria-hidden="true">
+      <label for="website">Não preencha este campo</label>
+      <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+    </div>
+
+    <!-- SEÇÃO 1 -->
+    <section class="secao">
+      <h2><small>Seção 1</small>Dados Pessoais</h2>
+      <div class="grid">
+        <div class="c6">
+          <label class="rotulo" for="nomeCompleto">Nome Completo <span class="obrig">*</span></label>
+          <input type="text" id="nomeCompleto" name="nomeCompleto" required autocomplete="name">
+        </div>
+        <div class="c6">
+          <label class="rotulo" for="email">E-mail <span class="obrig">*</span></label>
+          <input type="email" id="email" name="email" required autocomplete="email" placeholder="email@email.com">
+        </div>
+        <div class="c6">
+          <label class="rotulo" for="celPais">Celular (para contato via WhatsApp) <span class="obrig">*</span></label>
+          <div class="tel">
+            <div class="combo">
+              <input type="text" id="celPais" value="+55" data-pais="Brasil" required autocomplete="off" spellcheck="false"
+                     role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="paisLista"
+                     aria-label="Código do país" placeholder="+55 ou país">
+              <ul id="paisLista" class="combo-lista larga oculto" role="listbox" aria-label="Países encontrados"></ul>
+            </div>
+            <input type="tel" id="celDdd" data-mascara="ddd" required aria-label="DDD" placeholder="41">
+            <input type="tel" id="celNumero" data-mascara="telefone" required aria-label="Número" placeholder="99999-9999" autocomplete="tel-national">
+          </div>
+          <span class="ajuda" id="ajudaCel">Código do país, DDD e número. Ex.: +55 41 99999-9999. Para trocar o país, digite o código ou o nome (ex.: 351 ou Portugal).</span>
+        </div>
+        <div class="c3">
+          <label class="rotulo" for="dataNascimento">Data de nascimento <span class="obrig">*</span></label>
+          <div class="campo-data">
+            <input type="text" id="dataNascimento" name="dataNascimento" required inputmode="numeric"
+                   maxlength="10" placeholder="DD/MM/AAAA" autocomplete="bday" aria-describedby="ajudaData">
+            <button type="button" class="btn-cal" id="btnCalendario" aria-label="Escolher data no calendário" title="Escolher no calendário">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>
+              </svg>
+            </button>
+            <input type="date" id="dataPicker" class="picker-oculto" tabindex="-1" aria-hidden="true" min="1900-01-01">
+          </div>
+          <span class="ajuda" id="ajudaData">Digite ou escolha no calendário.</span>
+        </div>
+        <div class="c3">
+          <span class="rotulo" id="rotNacionalidade">Nacionalidade <span class="obrig">*</span></span>
+          <div class="opcoes linha" role="radiogroup" aria-labelledby="rotNacionalidade">
+            <label><input type="radio" name="nacionalidade" value="Brasileiro(a)" required> Brasileiro(a)</label>
+            <label><input type="radio" name="nacionalidade" value="Estrangeiro(a)"> Estrangeiro(a)</label>
+          </div>
+        </div>
+        <div class="c3">
+          <label class="rotulo" for="rg">RG <span class="obrig">*</span></label>
+          <input type="text" id="rg" name="rg" required>
+        </div>
+        <div class="c3">
+          <label class="rotulo" for="cpf">CPF <span class="obrig">*</span></label>
+          <input type="text" id="cpf" name="cpf" data-mascara="cpf" inputmode="numeric" required placeholder="000.000.000-00">
+        </div>
+        <div class="c2">
+          <label class="rotulo" for="cep">CEP <span class="obrig">*</span></label>
+          <input type="text" id="cep" name="cep" data-mascara="cep" data-cep="pf" inputmode="numeric" required placeholder="00000-000" autocomplete="postal-code">
+        </div>
+        <div class="c4">
+          <label class="rotulo" for="rua">Rua <span class="obrig">*</span></label>
+          <input type="text" id="rua" name="rua" required autocomplete="address-line1">
+        </div>
+        <div class="c2">
+          <label class="rotulo" for="numero">Nº <span class="obrig">*</span></label>
+          <input type="text" id="numero" name="numero" required>
+        </div>
+        <div class="c4">
+          <label class="rotulo" for="complemento">Complemento <span class="obrig">*</span></label>
+          <input type="text" id="complemento" name="complemento" required autocomplete="address-line2">
+        </div>
+        <div class="c2">
+          <label class="rotulo" for="bairro">Bairro <span class="obrig">*</span></label>
+          <input type="text" id="bairro" name="bairro" required>
+        </div>
+        <div class="c2">
+          <label class="rotulo" for="cidade">Cidade <span class="obrig">*</span></label>
+          <input type="text" id="cidade" name="cidade" required autocomplete="address-level2">
+        </div>
+        <div class="c2">
+          <label class="rotulo" for="estado">Estado <span class="obrig">*</span></label>
+          <select id="estado" name="estado" data-uf required>
+            <option value="">Selecione</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 2 -->
+    <section class="secao">
+      <h2><small>Seção 2</small>Dados da Empresa</h2>
+      <span class="rotulo" id="rotCnpj">Possui CNPJ? <span class="obrig">*</span></span>
+      <div class="opcoes linha" role="radiogroup" aria-labelledby="rotCnpj">
+        <label><input type="radio" name="possuiCnpj" value="Sim" required> Sim</label>
+        <label><input type="radio" name="possuiCnpj" value="Não"> Não</label>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 3 -->
+    <section class="secao oculto" id="secao-pj">
+      <h2><small>Seção 3</small>Dados Pessoa Jurídica</h2>
+      <div class="grid">
+        <div class="c6">
+          <label class="rotulo" for="razaoSocial">Razão Social <span class="obrig">*</span></label>
+          <input type="text" id="razaoSocial" name="razaoSocial" required>
+        </div>
+        <div class="c6">
+          <label class="rotulo" for="nomeFantasia">Nome Fantasia</label>
+          <input type="text" id="nomeFantasia" name="nomeFantasia">
+          <span class="ajuda">Opcional</span>
+        </div>
+        <div class="c2">
+          <label class="rotulo" for="pjCep">CEP <span class="obrig">*</span></label>
+          <input type="text" id="pjCep" name="pjCep" data-mascara="cep" data-cep="pj" inputmode="numeric" required placeholder="00000-000">
+        </div>
+        <div class="c4">
+          <label class="rotulo" for="pjRua">Rua <span class="obrig">*</span></label>
+          <input type="text" id="pjRua" name="pjRua" required>
+        </div>
+        <div class="c2">
+          <label class="rotulo" for="pjNumero">Nº <span class="obrig">*</span></label>
+          <input type="text" id="pjNumero" name="pjNumero" required>
+        </div>
+        <div class="c4">
+          <label class="rotulo" for="pjComplemento">Complemento <span class="obrig">*</span></label>
+          <input type="text" id="pjComplemento" name="pjComplemento" required>
+        </div>
+        <div class="c2">
+          <label class="rotulo" for="pjBairro">Bairro <span class="obrig">*</span></label>
+          <input type="text" id="pjBairro" name="pjBairro" required>
+        </div>
+        <div class="c2">
+          <label class="rotulo" for="pjCidade">Cidade <span class="obrig">*</span></label>
+          <input type="text" id="pjCidade" name="pjCidade" required>
+        </div>
+        <div class="c2">
+          <label class="rotulo" for="pjEstado">Estado <span class="obrig">*</span></label>
+          <select id="pjEstado" name="pjEstado" data-uf required>
+            <option value="">Selecione</option>
+          </select>
+        </div>
+        <div class="c6">
+          <label class="rotulo" for="cnpj">CNPJ <span class="obrig">*</span></label>
+          <input type="text" id="cnpj" name="cnpj" data-mascara="cnpj" inputmode="numeric" required placeholder="00.000.000/0000-00">
+        </div>
+        <div class="c3">
+          <label class="rotulo" for="inscricaoEstadual">Inscrição Estadual</label>
+          <input type="text" id="inscricaoEstadual" name="inscricaoEstadual">
+          <span class="ajuda">Opcional</span>
+        </div>
+        <div class="c3">
+          <label class="rotulo" for="inscricaoMunicipal">Inscrição Municipal</label>
+          <input type="text" id="inscricaoMunicipal" name="inscricaoMunicipal">
+          <span class="ajuda">Opcional</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 4 -->
+    <section class="secao">
+      <h2><small>Seção 4</small>Dados Bancários</h2>
+      <div class="aviso">Os dados bancários devem obrigatoriamente ser do prestador de serviço ou do CNPJ informado. Dados incorretos acarretarão no bloqueio dos pagamentos.</div>
+      <div class="grid">
+        <div class="c6">
+          <span class="rotulo" id="rotTipoConta">Tipo de Conta <span class="obrig">*</span></span>
+          <div class="opcoes" role="radiogroup" aria-labelledby="rotTipoConta">
+            <label><input type="radio" name="tipoConta" value="Conta Corrente Pessoa Física" required> Conta Corrente Pessoa Física</label>
+            <label><input type="radio" name="tipoConta" value="Conta Poupança Pessoa Física"> Conta Poupança Pessoa Física</label>
+            <label><input type="radio" name="tipoConta" value="Conta Corrente Pessoa Jurídica"> Conta Corrente Pessoa Jurídica</label>
+            <label><input type="radio" name="tipoConta" value="Conta Poupança Pessoa Jurídica"> Conta Poupança Pessoa Jurídica</label>
+          </div>
+        </div>
+        <div class="c6">
+          <label class="rotulo" for="bancoBusca">Banco <span class="obrig">*</span></label>
+          <div class="combo">
+            <input type="text" id="bancoBusca" required autocomplete="off" spellcheck="false"
+                   role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="bancoLista"
+                   placeholder="Carregando bancos...">
+            <input type="hidden" id="banco" name="banco">
+            <ul id="bancoLista" class="combo-lista oculto" role="listbox" aria-label="Bancos encontrados"></ul>
+          </div>
+          <span class="ajuda">Pesquise pelo código (ex.: 001) ou por qualquer parte do nome (ex.: caixa, nubank, sicoob) e clique no resultado.</span>
+        </div>
+        <div class="c3">
+          <label class="rotulo" for="agencia">Agência <span class="obrig">*</span></label>
+          <input type="text" id="agencia" name="agencia" inputmode="numeric" required placeholder="0000">
+        </div>
+        <div class="c3">
+          <label class="rotulo" for="conta">Conta com dígito verificador <span class="obrig">*</span></label>
+          <input type="text" id="conta" name="conta" required placeholder="00000-0">
+        </div>
+        <div class="c6">
+          <span class="rotulo" id="rotPix">Possui PIX? <span class="obrig">*</span></span>
+          <div class="opcoes linha" role="radiogroup" aria-labelledby="rotPix">
+            <label><input type="radio" name="possuiPix" value="Sim" required> Sim</label>
+            <label><input type="radio" name="possuiPix" value="Não"> Não</label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 5 -->
+    <section class="secao oculto" id="secao-pix">
+      <h2><small>Seção 5</small>Chave PIX</h2>
+      <div class="aviso">Os dados bancários devem obrigatoriamente ser do prestador de serviço ou do CNPJ informado. Dados incorretos acarretarão no bloqueio dos pagamentos.</div>
+      <div class="grid">
+        <div class="c6">
+          <span class="rotulo" id="rotPixTipo">Tipo de chave PIX <span class="obrig">*</span></span>
+          <div class="opcoes linha" role="radiogroup" aria-labelledby="rotPixTipo">
+            <label><input type="radio" name="pixTipo" value="CPF/CNPJ" required> CPF/CNPJ</label>
+            <label><input type="radio" name="pixTipo" value="E-mail"> E-mail</label>
+            <label><input type="radio" name="pixTipo" value="Celular"> Celular</label>
+            <label><input type="radio" name="pixTipo" value="Chave Aleatória"> Chave Aleatória</label>
+          </div>
+        </div>
+        <div class="c6">
+          <label class="rotulo" for="pixChave">Chave PIX <span class="obrig">*</span></label>
+          <div class="com-prefixo" id="pixWrap">
+            <span class="prefixo oculto" id="pixPrefixo" aria-hidden="true">+55</span>
+            <input type="text" id="pixChave" name="pixChave" required autocomplete="off" spellcheck="false"
+                   placeholder="Selecione o tipo de chave acima" aria-describedby="pixAjuda">
+          </div>
+          <span class="ajuda" id="pixAjuda">Selecione o tipo de chave para ver o formato esperado.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 6 -->
+    <section class="secao">
+      <h2><small>Seção 6</small>Anexar Documentos</h2>
+      <p class="ajuda" style="margin:-6px 0 16px">Formatos aceitos: PDF, JPG, PNG, DOC ou DOCX — até 10 MB por arquivo e 25 MB no total.</p>
+      <div class="grid">
+        <div class="c6 anexo">
+          <label class="rotulo" for="anexoCpf">CPF <span class="obrig">*</span></label>
+          <input type="file" id="anexoCpf" name="anexoCpf" required accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
+        </div>
+        <div class="c6 anexo">
+          <label class="rotulo" for="anexoCurriculoAtualizado">Currículo atualizado <span class="obrig">*</span></label>
+          <input type="file" id="anexoCurriculoAtualizado" name="anexoCurriculoAtualizado" required accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
+        </div>
+        <div class="c6 anexo">
+          <label class="rotulo" for="anexoCertidao">Certidão de antecedentes criminais <span class="obrig">*</span></label>
+          <div class="aviso" style="margin:4px 0 12px">
+            <strong>📄 Passo a passo para emitir a Certidão de Antecedentes Criminais</strong>
+            <ol>
+              <li>Acesse o link: <a href="https://www.gov.br/pt-br/servicos/emitir-certidao-de-antecedentes-criminais" target="_blank" rel="noopener">https://www.gov.br/pt-br/servicos/emitir-certidao-de-antecedentes-criminais</a></li>
+              <li>Clique no ícone em “Iniciar”;</li>
+              <li>Preencha os dados pessoais solicitados;</li>
+              <li>Na seção “Documentos”, selecione o tipo de documento e apresente o número e informações solicitadas;</li>
+              <li>Após revisar tudo, clique em “Emitir CAC”;</li>
+              <li>A certidão será gerada automaticamente;</li>
+              <li>Anexe neste formulário o documento emitido.</li>
+            </ol>
+          </div>
+          <input type="file" id="anexoCertidao" name="anexoCertidao" required accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
+        </div>
+      </div>
+    </section>
+
+    <div class="acoes">
+      <button type="submit" class="btn" id="btnEnviar">Enviar</button>
+      <span class="status" id="status" role="status" aria-live="polite"></span>
+    </div>
+  </form>
+
+  <div class="obrigado oculto" id="obrigado" role="status" aria-live="polite" tabindex="-1">
+    <div class="icone" aria-hidden="true">✓</div>
+    <p>Agradeço pela resposta ao formulário! Fique de olho em seu e-mail para receber o contrato para assinatura.</p>
+  </div>
+
+</main>
+
+<script>
+  /* =====================================================================
+   * CONFIGURAÇÃO — cole aqui a URL do App da Web do Apps Script
+   * (Implantar > Gerenciar implantações > URL que termina em /exec)
+   * ===================================================================== */
+  const URL_APPS_SCRIPT = 'COLE_AQUI_A_URL_DO_APP_DA_WEB';
+
+  const MAX_MB_ARQUIVO = 10;
+  const MAX_MB_TOTAL = 25;
+  const UFS = ['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO'];
+
+  // Usada se a BrasilAPI estiver indisponível
+  const BANCOS_RESERVA = [
+    ['001','Banco do Brasil S.A.'],['003','Banco da Amazônia S.A.'],['004','Banco do Nordeste do Brasil S.A.'],
+    ['021','Banestes S.A. Banco do Estado do Espírito Santo'],['025','Banco Alfa S.A.'],['033','Banco Santander (Brasil) S.A.'],
+    ['037','Banco do Estado do Pará S.A.'],['041','Banco do Estado do Rio Grande do Sul S.A. (Banrisul)'],
+    ['047','Banco do Estado de Sergipe S.A.'],['069','Banco Crefisa S.A.'],['070','BRB - Banco de Brasília S.A.'],
+    ['077','Banco Inter S.A.'],['085','Cooperativa Central de Crédito - Ailos'],['102','XP Investimentos CCTVM S.A.'],
+    ['104','Caixa Econômica Federal'],['121','Banco Agibank S.A.'],['125','Banco Genial S.A.'],['133','Cresol Confederação'],
+    ['136','Unicred do Brasil'],['197','Stone Instituição de Pagamento S.A.'],['208','Banco BTG Pactual S.A.'],
+    ['212','Banco Original S.A.'],['218','Banco BS2 S.A.'],['237','Banco Bradesco S.A.'],['246','Banco ABC Brasil S.A.'],
+    ['254','Paraná Banco S.A.'],['260','Nu Pagamentos S.A. (Nubank)'],['280','Will Financeira S.A.'],
+    ['290','PagSeguro Internet IP S.A. (PagBank)'],['318','Banco BMG S.A.'],['323','Mercado Pago IP Ltda.'],
+    ['330','Banco Bari de Investimentos e Financiamentos S.A.'],['336','Banco C6 S.A.'],['341','Itaú Unibanco S.A.'],
+    ['348','Banco XP S.A.'],['364','Efí S.A. Instituição de Pagamento'],['368','Banco CSF S.A. (Carrefour)'],
+    ['380','PicPay Instituição de Pagamento S.A.'],['389','Banco Mercantil do Brasil S.A.'],['403','Cora SCD S.A.'],
+    ['422','Banco Safra S.A.'],['461','Asaas Gestão Financeira IP S.A.'],['536','Neon Pagamentos S.A. IP'],
+    ['623','Banco Pan S.A.'],['633','Banco Rendimento S.A.'],['637','Banco Sofisa S.A.'],['655','Banco Votorantim S.A. (BV)'],
+    ['707','Banco Daycoval S.A.'],['735','Banco Neon S.A.'],['739','Banco Cetelem S.A.'],['745','Banco Citibank S.A.'],
+    ['748','Banco Cooperativo Sicredi S.A.'],['756','Banco Cooperativo do Brasil S.A. (Sicoob)']
+  ];
+
+  // Códigos internacionais de telefone (DDI). Brasil aparece primeiro na lista.
+  const PAISES = [
+    ['Brasil','55'],['Afeganistão','93'],['África do Sul','27'],['Albânia','355'],['Alemanha','49'],['Andorra','376'],
+    ['Angola','244'],['Anguila','1'],['Antígua e Barbuda','1'],['Arábia Saudita','966'],['Argélia','213'],['Argentina','54'],
+    ['Armênia','374'],['Aruba','297'],['Austrália','61'],['Áustria','43'],['Azerbaijão','994'],['Bahamas','1'],
+    ['Bahrein','973'],['Bangladesh','880'],['Barbados','1'],['Bélgica','32'],['Belize','501'],['Benin','229'],
+    ['Bermudas','1'],['Bielorrússia','375'],['Bolívia','591'],['Bonaire','599'],['Bósnia e Herzegovina','387'],['Botsuana','267'],
+    ['Brunei','673'],['Bulgária','359'],['Burkina Faso','226'],['Burundi','257'],['Butão','975'],['Cabo Verde','238'],
+    ['Camarões','237'],['Camboja','855'],['Canadá','1'],['Catar','974'],['Cazaquistão','7'],['Chade','235'],
+    ['Chile','56'],['China','86'],['Chipre','357'],['Colômbia','57'],['Comores','269'],['Congo','242'],
+    ['Coreia do Norte','850'],['Coreia do Sul','82'],['Costa do Marfim','225'],['Costa Rica','506'],['Croácia','385'],['Cuba','53'],
+    ['Curaçao','599'],['Dinamarca','45'],['Djibuti','253'],['Dominica','1'],['Egito','20'],['El Salvador','503'],
+    ['Emirados Árabes Unidos','971'],['Equador','593'],['Eritreia','291'],['Eslováquia','421'],['Eslovênia','386'],['Espanha','34'],
+    ['Essuatíni','268'],['Estados Unidos','1'],['Estônia','372'],['Etiópia','251'],['Fiji','679'],['Filipinas','63'],
+    ['Finlândia','358'],['França','33'],['Gabão','241'],['Gâmbia','220'],['Gana','233'],['Geórgia','995'],
+    ['Gibraltar','350'],['Granada','1'],['Grécia','30'],['Groenlândia','299'],['Guadalupe','590'],['Guam','1'],
+    ['Guatemala','502'],['Guernsey','44'],['Guiana','592'],['Guiana Francesa','594'],['Guiné','224'],['Guiné Equatorial','240'],
+    ['Guiné-Bissau','245'],['Haiti','509'],['Honduras','504'],['Hong Kong','852'],['Hungria','36'],['Iêmen','967'],
+    ['Ilha de Man','44'],['Ilha Norfolk','672'],['Ilhas Åland','358'],['Ilhas Cayman','1'],['Ilhas Cook','682'],['Ilhas Faroé','298'],
+    ['Ilhas Malvinas','500'],['Ilhas Marianas do Norte','1'],['Ilhas Marshall','692'],['Ilhas Salomão','677'],
+    ['Ilhas Turcas e Caicos','1'],['Ilhas Virgens Americanas','1'],['Ilhas Virgens Britânicas','1'],['Índia','91'],
+    ['Indonésia','62'],['Irã','98'],['Iraque','964'],['Irlanda','353'],['Islândia','354'],['Israel','972'],
+    ['Itália','39'],['Jamaica','1'],['Japão','81'],['Jersey','44'],['Jordânia','962'],['Kiribati','686'],
+    ['Kosovo','383'],['Kuwait','965'],['Laos','856'],['Lesoto','266'],['Letônia','371'],['Líbano','961'],
+    ['Libéria','231'],['Líbia','218'],['Liechtenstein','423'],['Lituânia','370'],['Luxemburgo','352'],['Macau','853'],
+    ['Macedônia do Norte','389'],['Madagascar','261'],['Malásia','60'],['Malawi','265'],['Maldivas','960'],['Mali','223'],
+    ['Malta','356'],['Marrocos','212'],['Martinica','596'],['Maurício','230'],['Mauritânia','222'],['Mayotte','262'],
+    ['México','52'],['Mianmar','95'],['Micronésia','691'],['Moçambique','258'],['Moldávia','373'],['Mônaco','377'],
+    ['Mongólia','976'],['Montenegro','382'],['Montserrat','1'],['Namíbia','264'],['Nauru','674'],['Nepal','977'],
+    ['Nicarágua','505'],['Níger','227'],['Nigéria','234'],['Niue','683'],['Noruega','47'],['Nova Caledônia','687'],
+    ['Nova Zelândia','64'],['Omã','968'],['Países Baixos (Holanda)','31'],['Palau','680'],['Palestina','970'],['Panamá','507'],
+    ['Papua-Nova Guiné','675'],['Paquistão','92'],['Paraguai','595'],['Peru','51'],['Polinésia Francesa','689'],['Polônia','48'],
+    ['Porto Rico','1'],['Portugal','351'],['Quênia','254'],['Quirguistão','996'],['Reino Unido','44'],
+    ['República Centro-Africana','236'],['República Democrática do Congo','243'],['República Dominicana','1'],
+    ['República Tcheca (Tchéquia)','420'],['Reunião','262'],['Romênia','40'],['Ruanda','250'],['Rússia','7'],
+    ['Samoa','685'],['Samoa Americana','1'],['San Marino','378'],['Santa Helena','290'],['Santa Lúcia','1'],
+    ['São Cristóvão e Névis','1'],['São Pedro e Miquelão','508'],['São Tomé e Príncipe','239'],['São Vicente e Granadinas','1'],
+    ['Seicheles','248'],['Senegal','221'],['Serra Leoa','232'],['Sérvia','381'],['Singapura','65'],['Sint Maarten','1'],
+    ['Síria','963'],['Somália','252'],['Sri Lanka','94'],['Sudão','249'],['Sudão do Sul','211'],['Suécia','46'],
+    ['Suíça','41'],['Suriname','597'],['Svalbard','47'],['Tadjiquistão','992'],['Tailândia','66'],['Taiwan','886'],
+    ['Tanzânia','255'],['Timor-Leste','670'],['Togo','228'],['Tokelau','690'],['Tonga','676'],['Trinidad e Tobago','1'],
+    ['Tunísia','216'],['Turcomenistão','993'],['Turquia','90'],['Tuvalu','688'],['Ucrânia','380'],['Uganda','256'],
+    ['Uruguai','598'],['Uzbequistão','998'],['Vanuatu','678'],['Vaticano','39'],['Venezuela','58'],['Vietnã','84'],
+    ['Wallis e Futuna','681'],['Zâmbia','260'],['Zimbábue','263']
+  ].map(([nome, codigo]) => ({ nome, codigo }));
+  // Quando vários países dividem o mesmo código, este aparece primeiro
+  const PAIS_PRINCIPAL = { '1': 'Estados Unidos', '7': 'Rússia', '39': 'Itália', '44': 'Reino Unido', '47': 'Noruega', '262': 'Reunião', '358': 'Finlândia', '599': 'Curaçao' };
+  const ehPrincipal = p => PAIS_PRINCIPAL[p.codigo] === p.nome ? 0 : 1;
+
+  const CONFIGURADO =/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec$/.test(URL_APPS_SCRIPT) ||
+                      /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?\//.test(URL_APPS_SCRIPT);
+
+  const form = document.getElementById('form');
+  const $ = id => document.getElementById(id);
+  const soDigitos = v => String(v || '').replace(/\D/g, '');
+  const semAcento = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  PAISES.forEach(p => { p.chave = semAcento(p.nome); });
+  const ehBrasil = () => $('celPais').value.trim() === '+55';
+
+  /* ---------------- Máscaras ---------------- */
+  const MASCARAS = {
+    cpf: v => soDigitos(v).slice(0, 11)
+      .replace(/(\d{3})(\d)/, '$1.$2')
+      .replace(/(\d{3})(\d)/, '$1.$2')
+      .replace(/(\d{3})(\d{1,2})$/, '$1-$2'),
+    cnpj: v => soDigitos(v).slice(0, 14)
+      .replace(/^(\d{2})(\d)/, '$1.$2')
+      .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
+      .replace(/\.(\d{3})(\d)/, '.$1/$2')
+      .replace(/(\d{4})(\d)/, '$1-$2'),
+    cep: v => soDigitos(v).slice(0, 8).replace(/(\d{5})(\d)/, '$1-$2'),
+    ddd: v => soDigitos(v).slice(0, ehBrasil() ? 2 : 4),
+    telefone: v => {
+      if (!ehBrasil()) return soDigitos(v).slice(0, 12);   // outros países: só números
+      const d = soDigitos(v).slice(0, 9);
+      return d.length > 8 ? d.replace(/(\d{5})(\d{1,4})/, '$1-$2') : d.replace(/(\d{4})(\d{1,4})/, '$1-$2');
+    },
+    data: v => {
+      const d = soDigitos(v).slice(0, 8);
+      if (d.length > 4) return d.slice(0, 2) + '/' + d.slice(2, 4) + '/' + d.slice(4);
+      if (d.length > 2) return d.slice(0, 2) + '/' + d.slice(2);
+      return d;
+    }
+  };
+
+  /* ---------------- Validadores ---------------- */
+  function cpfValido(v) {
+    const d = soDigitos(v);
+    if (d.length !== 11 || /^(\d)\1+$/.test(d)) return false;
+    for (let t = 9; t < 11; t++) {
+      let s = 0;
+      for (let i = 0; i < t; i++) s += +d[i] * (t + 1 - i);
+      if (((s * 10) % 11) % 10 !== +d[t]) return false;
+    }
+    return true;
+  }
+  function cnpjValido(v) {
+    const d = soDigitos(v);
+    if (d.length !== 14 || /^(\d)\1+$/.test(d)) return false;
+    const calc = b => {
+      const p = b.length === 12 ? [5,4,3,2,9,8,7,6,5,4,3,2] : [6,5,4,3,2,9,8,7,6,5,4,3,2];
+      const r = b.split('').reduce((s, n, i) => s + +n * p[i], 0) % 11;
+      return r < 2 ? 0 : 11 - r;
+    };
+    const d1 = calc(d.slice(0, 12)), d2 = calc(d.slice(0, 12) + d1);
+    return d1 === +d[12] && d2 === +d[13];
+  }
+  const emailValido = v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+
+  // "DD/MM/AAAA" -> Date (ou null se inexistente)
+  function lerData(v) {
+    const m = String(v || '').match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+    if (!m) return null;
+    const dia = +m[1], mes = +m[2], ano = +m[3];
+    const dt = new Date(ano, mes - 1, dia);
+    if (dt.getFullYear() !== ano || dt.getMonth() !== mes - 1 || dt.getDate() !== dia) return null;
+    return dt;
+  }
+  const hojeISO = () => { const h = new Date(); return h.getFullYear() + '-' + String(h.getMonth() + 1).padStart(2, '0') + '-' + String(h.getDate()).padStart(2, '0'); };
+
+  /* ---------------- Chave PIX ---------------- */
+  const PIX = {
+    'CPF/CNPJ': {
+      placeholder: 'Somente números (11 ou 14 dígitos)',
+      ajuda: 'Digite ou cole o CPF ou CNPJ. Pontos, barras, traços e espaços são removidos automaticamente.',
+      modo: 'numeric', prefixo: false,
+      limpar: v => soDigitos(v).slice(0, 14),
+      validar: v => (v.length === 11 && cpfValido(v)) || (v.length === 14 && cnpjValido(v)),
+      erro: 'Informe um CPF (11 dígitos) ou CNPJ (14 dígitos) válido.',
+      final: v => v
+    },
+    'Celular': {
+      placeholder: 'DDD + número. Ex.: 41999999999',
+      ajuda: 'Digite o DDD e o número do celular, só números. O código do país (+55) já está incluído.',
+      modo: 'numeric', prefixo: true,
+      limpar: v => {
+        let d = soDigitos(v);
+        if (d.length > 11 && d.startsWith('55')) d = d.slice(2);
+        return d.slice(0, 11);
+      },
+      validar: v => /^[1-9]{2}9\d{8}$/.test(v),
+      erro: 'Informe o DDD + celular com 9 dígitos, começando com 9. Ex.: 41999999999',
+      final: v => '+55' + v
+    },
+    'E-mail': {
+      placeholder: 'email@email.com',
+      ajuda: 'Informe o e-mail cadastrado como chave PIX.',
+      modo: 'email', prefixo: false,
+      limpar: v => String(v).replace(/\s+/g, ''),
+      validar: v => emailValido(v) && v.length <= 77,
+      erro: 'Informe um e-mail válido.',
+      final: v => v.toLowerCase()
+    },
+    'Chave Aleatória': {
+      placeholder: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
+      ajuda: 'Cole a chave aleatória exatamente como aparece no app do seu banco (32 caracteres).',
+      modo: 'text', prefixo: false,
+      limpar: v => String(v).toLowerCase().replace(/[^0-9a-f-]/g, '').slice(0, 36),
+      validar: v => soHex(v).length === 32,
+      erro: 'A chave aleatória deve ter 32 caracteres (letras de a-f e números).',
+      final: v => { const h = soHex(v); return [h.slice(0,8), h.slice(8,12), h.slice(12,16), h.slice(16,20), h.slice(20)].join('-'); }
+    }
+  };
+  function soHex(v) { return String(v).toLowerCase().replace(/[^0-9a-f]/g, ''); }
+  function pixTipo() {
+    const r = form.querySelector('input[name="pixTipo"]:checked');
+    return r ? r.value : '';
+  }
+
+  /* ---------------- Validação de campo ---------------- */
+  function validarCampo(el) {
+    if (el.disabled) return;
+    const v = el.value.trim();
+    let msg = '';
+    if (v) {
+      switch (el.id) {
+        case 'email':
+          if (!emailValido(v)) msg = 'Informe um e-mail válido. Ex.: email@email.com';
+          break;
+        case 'cpf':
+          if (!cpfValido(v)) msg = 'CPF inválido. Use o formato 000.000.000-00.';
+          break;
+        case 'cnpj':
+          if (!cnpjValido(v)) msg = 'CNPJ inválido. Use o formato 00.000.000/0000-00.';
+          break;
+        case 'cep': case 'pjCep':
+          if (soDigitos(v).length !== 8) msg = 'CEP deve ter 8 dígitos. Ex.: 00000-000';
+          break;
+        case 'celPais':
+          if (!paisPorCodigo(v)) msg = 'Escolha o país na lista (digite o código ou o nome).';
+          break;
+        case 'celDdd':
+          if (ehBrasil() ? !/^\d{2}$/.test(v) : !/^\d{1,4}$/.test(v)) msg = ehBrasil() ? 'Informe o DDD com 2 dígitos. Ex.: 41' : 'Código de área: até 4 dígitos.';
+          break;
+        case 'celNumero':
+          if (ehBrasil() ? !/^\d{4,5}-\d{4}$/.test(v) : !/^\d{4,12}$/.test(v)) msg = ehBrasil() ? 'Informe o número no formato 99999-9999.' : 'Informe o número, só com dígitos.';
+          break;
+        case 'dataNascimento': {
+          const dt = lerData(v);
+          if (!dt) msg = 'Data inválida. Use o formato DD/MM/AAAA.';
+          else if (dt > new Date()) msg = 'A data de nascimento não pode ser no futuro.';
+          else if (dt.getFullYear() < 1900) msg = 'Confira o ano de nascimento.';
+          break;
+        }
+        case 'pixChave': {
+          const regra = PIX[pixTipo()];
+          if (regra && !regra.validar(v)) msg = regra.erro;
+          break;
+        }
+        case 'bancoBusca':
+          if ($('banco').value !== v) msg = 'Selecione um banco da lista de resultados.';
+          break;
+      }
+    }
+    el.setCustomValidity(msg);
+  }
+
+  function validarArquivos() {
+    const inputs = Array.from(form.querySelectorAll('input[type="file"]'));
+    let total = 0;
+    inputs.forEach(i => {
+      const f = i.files[0];
+      let msg = '';
+      if (f) {
+        total += f.size;
+        if (f.size > MAX_MB_ARQUIVO * 1024 * 1024) msg = 'Este arquivo passa de ' + MAX_MB_ARQUIVO + ' MB. Envie uma versão menor.';
+      }
+      i.setCustomValidity(msg);
+    });
+    if (total > MAX_MB_TOTAL * 1024 * 1024) {
+      const ultimo = inputs.filter(i => i.files[0]).pop();
+      if (ultimo) ultimo.setCustomValidity('A soma dos anexos passa de ' + MAX_MB_TOTAL + ' MB. Reduza o tamanho de algum arquivo.');
+    }
+  }
+
+  /* ---------------- Seções condicionais ---------------- */
+  function mostrarSecao(id, mostrar) {
+    const s = $(id);
+    s.classList.toggle('oculto', !mostrar);
+    s.querySelectorAll('input, select').forEach(el => { el.disabled = !mostrar; });
+  }
+
+  /* ---------------- Data de nascimento (texto + calendário) ---------------- */
+  function iniciarData() {
+    const txt = $('dataNascimento'), picker = $('dataPicker');
+    picker.max = hojeISO();
+
+    txt.addEventListener('input', () => {
+      txt.value = MASCARAS.data(txt.value);
+      const dt = lerData(txt.value);
+      picker.value = dt ? txt.value.split('/').reverse().join('-') : '';
+      validarCampo(txt);
+    });
+
+    picker.addEventListener('change', () => {
+      if (!picker.value) return;
+      const [a, m, d] = picker.value.split('-');
+      txt.value = d + '/' + m + '/' + a;
+      validarCampo(txt);
+      txt.focus();
+    });
+
+    $('btnCalendario').addEventListener('click', () => {
+      picker.max = hojeISO();
+      try {
+        if (typeof picker.showPicker === 'function') { picker.showPicker(); return; }
+      } catch (e) { /* segue para o plano B */ }
+      picker.style.pointerEvents = 'auto';
+      picker.focus();
+      picker.click();
+      picker.style.pointerEvents = '';
+    });
+  }
+
+  /* ---------------- Banco: busca com filtro ---------------- */
+  let BANCOS = [];
+  const MAX_RESULTADOS = 60;
+
+  function montarBancos(pares) {
+    BANCOS = pares.map(([codigo, nome]) => ({
+      codigo, nome,
+      rotulo: codigo + ' - ' + nome,
+      chave: semAcento(codigo + ' ' + nome)
+    }));
+    const busca = $('bancoBusca');
+    busca.placeholder = 'Digite o código ou o nome do banco';
+  }
+
+  async function carregarBancos() {
+    try {
+      const r = await fetch('https://brasilapi.com.br/api/banks/v1');
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      const dados = await r.json();
+      const vistos = new Set();
+      const pares = dados
+        .filter(b => b.code !== null && b.code !== undefined)
+        .map(b => [String(b.code).padStart(3, '0'), String(b.fullName || b.name || '').replace(/\s+/g, ' ').trim()])
+        .filter(([c, n]) => { const k = c + n; if (vistos.has(k)) return false; vistos.add(k); return true; })
+        .sort((a, b) => a[0].localeCompare(b[0]));
+      if (pares.length < 50) throw new Error('lista incompleta');
+      montarBancos(pares);
+    } catch (e) {
+      montarBancos(BANCOS_RESERVA);
+    }
+  }
+
+  function filtrarBancos(texto) {
+    const termos = semAcento(texto).split(/\s+/).filter(Boolean);
+    if (!termos.length) return BANCOS.slice();
+    const q = termos.join(' ');
+    return BANCOS
+      .filter(b => termos.every(t => b.chave.includes(t)))
+      .map(b => {
+        let p = 4;
+        if (/^\d+$/.test(q) && b.codigo === q.padStart(3, '0')) p = 0;
+        else if (b.codigo.startsWith(q)) p = 1;
+        else if (semAcento(b.nome).startsWith(q)) p = 2;
+        else if (semAcento(b.nome).split(/[\s.()-]+/).some(w => w.startsWith(termos[0]))) p = 3;
+        return { b, p };
+      })
+      .sort((x, y) => x.p - y.p || x.b.codigo.localeCompare(y.b.codigo))
+      .map(x => x.b);
+  }
+
+  function destacar(texto, termos) {
+    // Destaca os trechos pesquisados sem perder os acentos do texto original
+    const base = semAcento(texto);
+    const marcas = new Array(texto.length).fill(false);
+    termos.forEach(t => {
+      let i = base.indexOf(t);
+      while (t && i > -1) { for (let k = i; k < i + t.length; k++) marcas[k] = true; i = base.indexOf(t, i + t.length); }
+    });
+    let out = '', aberto = false;
+    for (let i = 0; i < texto.length; i++) {
+      if (marcas[i] && !aberto) { out += '<mark>'; aberto = true; }
+      if (!marcas[i] && aberto) { out += '</mark>'; aberto = false; }
+      out += escapar(texto[i]);
+    }
+    return out + (aberto ? '</mark>' : '');
+  }
+  function escapar(s) { return s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+
+  /* ---------------- Campo de busca com lista (usado no banco e no país) ---------------- */
+  function criarCombo(cfg) {
+    const input = cfg.input, lista = cfg.lista;
+    let res = [], ativo = -1;
+
+    function abrir(texto) {
+      const q = texto === undefined ? input.value : texto;
+      const termos = semAcento(q).replace(/\+/g, ' ').split(/\s+/).filter(Boolean);
+      res = cfg.filtrar(q);
+      ativo = res.length ? 0 : -1;
+      if (cfg.carregando && cfg.carregando()) {
+        lista.innerHTML = '<li class="info">Carregando lista...</li>';
+      } else if (!res.length) {
+        lista.innerHTML = '<li class="info">' + cfg.vazio + '</li>';
+      } else {
+        const max = cfg.max || 60;
+        lista.innerHTML = res.slice(0, max).map((it, i) =>
+          '<li role="option" id="' + cfg.prefixo + i + '" data-i="' + i + '" aria-selected="' + (i === ativo) + '">' +
+          cfg.html(it, termos) + '</li>'
+        ).join('') + (res.length > max
+          ? '<li class="info">Mostrando ' + max + ' de ' + res.length + '. Continue digitando para refinar.</li>' : '');
+        lista.scrollTop = 0;
+      }
+      lista.classList.remove('oculto');
+      input.setAttribute('aria-expanded', 'true');
+      input.setAttribute('aria-activedescendant', ativo > -1 ? cfg.prefixo + ativo : '');
+    }
+    function fechar() {
+      lista.classList.add('oculto');
+      input.setAttribute('aria-expanded', 'false');
+      input.removeAttribute('aria-activedescendant');
+    }
+    function marcar(i) {
+      const itens = lista.querySelectorAll('li[role="option"]');
+      if (!itens.length) return;
+      ativo = (i + itens.length) % itens.length;
+      itens.forEach((li, k) => li.setAttribute('aria-selected', String(k === ativo)));
+      itens[ativo].scrollIntoView({ block: 'nearest' });
+      input.setAttribute('aria-activedescendant', cfg.prefixo + ativo);
+    }
+    function escolher(i) {
+      const it = res[i];
+      if (!it) return;
+      fechar();
+      cfg.aoEscolher(it);
+    }
+
+    input.addEventListener('input', () => { cfg.aoDigitar(); abrir(); });
+    input.addEventListener('focus', () => cfg.aoFocar(abrir));
+    input.addEventListener('keydown', e => {
+      const aberta = !lista.classList.contains('oculto');
+      if (e.key === 'ArrowDown') { e.preventDefault(); aberta ? marcar(ativo + 1) : abrir(''); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); if (aberta) marcar(ativo - 1); }
+      else if (e.key === 'Enter') { if (aberta && ativo > -1) { e.preventDefault(); escolher(ativo); } }
+      else if (e.key === 'Escape') { fechar(); }
+    });
+    lista.addEventListener('mousedown', e => {
+      const li = e.target.closest('li[role="option"]');
+      if (!li) return;
+      e.preventDefault();               // não perde o foco antes de escolher
+      escolher(+li.dataset.i);
+    });
+    input.addEventListener('blur', () => setTimeout(() => {
+      fechar();
+      if (cfg.aoSair) cfg.aoSair();
+    }, 120));
+    return { abrir, fechar };
+  }
+
+  /* ---------------- Banco ---------------- */
+  function iniciarBanco() {
+    const busca = $('bancoBusca');
+    criarCombo({
+      input: busca, lista: $('bancoLista'), prefixo: 'banco-op-', max: MAX_RESULTADOS,
+      vazio: 'Nenhum banco encontrado. Tente o código ou outra parte do nome.',
+      carregando: () => !BANCOS.length,
+      filtrar: filtrarBancos,
+      html: (b, termos) => '<span class="cod">' + destacar(b.codigo, termos) + '</span><span>' + destacar(b.nome, termos) + '</span>',
+      aoDigitar: () => { $('banco').value = ''; validarCampo(busca); },   // digitou de novo: precisa escolher outra vez
+      aoFocar: abrir => { if (!$('banco').value) abrir(); },
+      aoEscolher: b => { busca.value = b.rotulo; $('banco').value = b.rotulo; validarCampo(busca); }
+    });
+  }
+
+  /* ---------------- País (código do telefone) ---------------- */
+  function paisPorCodigo(texto) {
+    const d = soDigitos(texto);
+    if (!d || !/^\+?\d+$/.test(String(texto).trim())) return null;
+    return PAISES.filter(p => p.codigo === d).sort((a, b) => ehPrincipal(a) - ehPrincipal(b))[0] || null;
+  }
+
+  function filtrarPaises(texto) {
+    const q = semAcento(texto).trim();
+    if (!q || q === '+') return PAISES.slice();
+    const digitos = q.replace(/^\+/, '');
+    if (/^\d+$/.test(digitos)) {
+      return PAISES
+        .filter(p => p.codigo.startsWith(digitos))
+        .sort((a, b) => a.codigo.length - b.codigo.length || a.codigo.localeCompare(b.codigo) || ehPrincipal(a) - ehPrincipal(b) || a.chave.localeCompare(b.chave));
+    }
+    const termos = q.split(/\s+/).filter(Boolean);
+    return PAISES
+      .filter(p => termos.every(t => p.chave.includes(t)))
+      .map(p => ({ p, n: p.chave.startsWith(q) ? 0 : (p.chave.split(/[\s()-]+/).some(w => w.startsWith(termos[0])) ? 1 : 2) }))
+      .sort((x, y) => x.n - y.n || x.p.chave.localeCompare(y.p.chave))
+      .map(x => x.p);
+  }
+
+  function aplicarPais(codigo, nome) {
+    const pais = $('celPais');
+    pais.value = '+' + codigo;
+    pais.dataset.pais = nome;
+    pais.title = nome + ' (+' + codigo + ')';
+    validarCampo(pais);
+    atualizarFormatoTelefone();
+  }
+
+  function atualizarFormatoTelefone() {
+    const br = ehBrasil(), ddd = $('celDdd'), num = $('celNumero');
+    ddd.placeholder = br ? '41' : 'Área';
+    ddd.setAttribute('aria-label', br ? 'DDD' : 'Código de área (se houver)');
+    ddd.required = br;
+    num.placeholder = br ? '99999-9999' : 'Número';
+    $('ajudaCel').textContent = br
+      ? 'Código do país, DDD e número. Ex.: +55 41 99999-9999. Para trocar o país, digite o código ou o nome (ex.: 351 ou Portugal).'
+      : 'País ' + ($('celPais').dataset.pais || '') + ': informe o código de área (se houver) e o número, só com dígitos.';
+    ddd.value = MASCARAS.ddd(ddd.value);
+    num.value = MASCARAS.telefone(num.value);
+    if (ddd.value) validarCampo(ddd); else ddd.setCustomValidity('');
+    if (num.value) validarCampo(num);
+  }
+
+  function iniciarPais() {
+    const pais = $('celPais');
+    criarCombo({
+      input: pais, lista: $('paisLista'), prefixo: 'pais-op-', max: 300,
+      vazio: 'Nenhum país encontrado. Tente o código (ex.: 351) ou o nome.',
+      filtrar: filtrarPaises,
+      html: (p, termos) => '<span class="cod">' + destacar('+' + p.codigo, termos) + '</span><span>' + destacar(p.nome, termos) + '</span>',
+      aoDigitar: () => { pais.dataset.pais = ''; validarCampo(pais); },
+      aoFocar: abrir => { pais.select(); abrir(''); },   // mostra a lista completa ao entrar no campo
+      aoEscolher: p => { aplicarPais(p.codigo, p.nome); $('celDdd').focus(); },
+      aoSair: () => {
+        // Digitou o código exato (ex.: 351) e saiu do campo: aceita sem precisar clicar
+        if (pais.dataset.pais) return;
+        const porNome = PAISES.find(x => x.chave === semAcento(pais.value).trim());   // digitou o nome inteiro
+        const p = paisPorCodigo(pais.value) || porNome;
+        if (p) aplicarPais(p.codigo, p.nome);
+        else validarCampo(pais);
+      }
+    });
+  }
+
+  /* ---------------- CEP (preenchimento automático via ViaCEP) ---------------- */
+  async function buscarCep(el) {
+    const cep = soDigitos(el.value);
+    if (cep.length !== 8) return;
+    const p = el.dataset.cep === 'pj' ? 'pj' : '';
+    const id = n => p ? p + n.charAt(0).toUpperCase() + n.slice(1) : n;
+    try {
+      const r = await fetch('https://viacep.com.br/ws/' + cep + '/json/');
+      const d = await r.json();
+      if (d.erro) return;
+      const preencher = (campo, valor) => { const c = $(id(campo)); if (c && !c.value && valor) c.value = valor; };
+      preencher('rua', d.logradouro);
+      preencher('bairro', d.bairro);
+      preencher('cidade', d.localidade);
+      const uf = $(id('estado'));
+      if (uf && !uf.value && d.uf) uf.value = d.uf;
+    } catch (e) { /* se falhar, a pessoa preenche manualmente */ }
+  }
+
+  /* ---------------- Coleta e envio ---------------- */
+  function coletar() {
+    const dados = {};
+    Array.from(form.elements).forEach(el => {
+      if (!el.name || el.disabled || el.type === 'file') return;
+      if ((el.type === 'radio' || el.type === 'checkbox') && !el.checked) return;
+      dados[el.name] = el.value.trim();
+    });
+    dados.celular = [$('celPais').value, $('celDdd').value, $('celNumero').value].map(s => s.trim()).filter(Boolean).join(' ');
+    if (dados.possuiPix === 'Sim' && PIX[dados.pixTipo]) {
+      dados.pixChave = PIX[dados.pixTipo].final(dados.pixChave);
+    }
+    return dados;
+  }
+
+  function lerArquivo(file) {
+    return new Promise((resolve, reject) => {
+      const r = new FileReader();
+      r.onload = () => resolve(String(r.result).split(',')[1] || '');
+      r.onerror = () => reject(new Error('Não foi possível ler o arquivo ' + file.name));
+      r.readAsDataURL(file);
+    });
+  }
+
+  async function lerAnexos() {
+    const inputs = Array.from(form.querySelectorAll('input[type="file"]')).filter(i => !i.disabled && i.files[0]);
+    const anexos = [];
+    for (const i of inputs) {
+      const f = i.files[0];
+      anexos.push({ campo: i.name, nome: f.name, mimeType: f.type || 'application/octet-stream', base64: await lerArquivo(f) });
+    }
+    return anexos;
+  }
+
+  async function enviar(dados) {
+    // text/plain evita a verificação prévia (preflight) de CORS, que o Apps Script não responde
+    const resp = await fetch(URL_APPS_SCRIPT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(dados),
+      redirect: 'follow'
+    });
+    let r;
+    try { r = await resp.json(); }
+    catch (e) { throw new Error('O servidor não respondeu como esperado. Tente novamente em alguns minutos.'); }
+    if (!r || !r.ok) throw new Error((r && r.erro) || 'Não foi possível salvar seus dados.');
+    return r;
+  }
+
+  function status(msg, erro) {
+    const s = $('status');
+    s.textContent = msg;
+    s.classList.toggle('erro', !!erro);
+  }
+
+  function mostrarObrigado() {
+    form.classList.add('oculto');
+    const ok = $('obrigado');
+    ok.classList.remove('oculto');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    ok.focus({ preventScroll: true });
+  }
+
+  /* ---------------- Inicialização ---------------- */
+  document.addEventListener('DOMContentLoaded', () => {
+    if (!CONFIGURADO) $('avisoConfig').classList.remove('oculto');
+
+    document.querySelectorAll('select[data-uf]').forEach(s => UFS.forEach(uf => s.add(new Option(uf, uf))));
+    mostrarSecao('secao-pj', false);
+    mostrarSecao('secao-pix', false);
+
+    carregarBancos();
+    iniciarBanco();
+    iniciarPais();
+    iniciarData();
+
+    document.querySelectorAll('[data-mascara]').forEach(el => {
+      el.addEventListener('input', () => {
+        el.value = MASCARAS[el.dataset.mascara](el.value);
+        validarCampo(el);
+      });
+    });
+    $('email').addEventListener('input', e => validarCampo(e.target));
+    document.querySelectorAll('[data-cep]').forEach(el => el.addEventListener('blur', () => buscarCep(el)));
+
+    form.querySelectorAll('input[name="possuiCnpj"]').forEach(r =>
+      r.addEventListener('change', () => mostrarSecao('secao-pj', r.value === 'Sim' && r.checked)));
+    form.querySelectorAll('input[name="possuiPix"]').forEach(r =>
+      r.addEventListener('change', () => mostrarSecao('secao-pix', r.value === 'Sim' && r.checked)));
+
+    // PIX: muda formato conforme o tipo
+    form.querySelectorAll('input[name="pixTipo"]').forEach(r => r.addEventListener('change', () => {
+      const regra = PIX[r.value], c = $('pixChave');
+      c.value = '';
+      c.placeholder = regra.placeholder;
+      c.inputMode = regra.modo;
+      $('pixAjuda').textContent = regra.ajuda;
+      $('pixPrefixo').classList.toggle('oculto', !regra.prefixo);
+      c.setCustomValidity('');
+    }));
+    // Limpa a formatação ao digitar ou colar
+    $('pixChave').addEventListener('input', e => {
+      const regra = PIX[pixTipo()];
+      if (regra) e.target.value = regra.limpar(e.target.value);
+      validarCampo(e.target);
+    });
+    $('pixChave').addEventListener('blur', e => {
+      // Chave aleatória colada sem hífens: formata no padrão do banco
+      if (pixTipo() === 'Chave Aleatória' && soHex(e.target.value).length === 32) {
+        e.target.value = PIX['Chave Aleatória'].final(e.target.value);
+      }
+      if (pixTipo() === 'E-mail') e.target.value = e.target.value.toLowerCase();
+      validarCampo(e.target);
+    });
+
+    form.querySelectorAll('input[type="file"]').forEach(i => i.addEventListener('change', validarArquivos));
+
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      form.classList.add('validado');
+      form.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"]').forEach(validarCampo);
+      validarArquivos();
+
+      if (!form.checkValidity()) {
+        status('Confira os campos destacados.', true);
+        form.reportValidity();
+        return;
+      }
+      if (!CONFIGURADO) {
+        status('Formulário ainda não conectado ao Google. Avise o responsável.', true);
+        return;
+      }
+
+      const btn = $('btnEnviar');
+      btn.disabled = true;
+      status('Enviando seus dados e documentos... isso pode levar alguns segundos.');
+
+      try {
+        const dados = coletar();
+        dados.anexos = await lerAnexos();
+        await enviar(dados);
+        mostrarObrigado();
+      } catch (err) {
+        btn.disabled = false;
+        const msg = (err && err.message === 'Failed to fetch')
+          ? 'Falha de conexão. Verifique sua internet e tente novamente.'
+          : (err && err.message) || 'Não foi possível enviar. Tente novamente.';
+        status(msg, true);
+      }
+    });
+  });
+</script>
+</body>
+</html>
