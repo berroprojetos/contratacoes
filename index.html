@@ -152,6 +152,17 @@
     .validado input:invalid, .validado select:invalid { border-color: var(--error); }
     .validado .anexo:has(input:invalid) { border-color: var(--error); }
 
+    .lgpd { border-left: 4px solid var(--accent); }
+    .lgpd h2 { border-bottom: 0; padding-bottom: 0; margin-bottom: 10px; }
+    .lgpd p { margin: 0 0 16px; font-size: .92rem; }
+    .aceite {
+      display: flex; align-items: flex-start; gap: 12px; cursor: pointer;
+      padding: 14px; border: 1px solid var(--border); border-radius: 8px; background: #fafafa;
+      font-weight: 500;
+    }
+    .aceite input { width: 20px; height: 20px; margin: 1px 0 0; flex-shrink: 0; accent-color: var(--accent); cursor: pointer; }
+    .aceite:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
+    .validado .aceite:has(input:invalid) { border-color: var(--error); }
     .armadilha { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
 
     .acoes { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 8px; }
@@ -264,13 +275,9 @@
             <label><input type="radio" name="estadoCivil" value="Divorciado(a)"> Divorciado(a)</label>
           </div>
         </div>
-        <div class="c6">
+        <div class="c3">
           <label class="rotulo" for="profissao">Profissão <span class="obrig">*</span></label>
           <input type="text" id="profissao" name="profissao" required autocomplete="organization-title">
-        </div>
-        <div class="c3">
-          <label class="rotulo" for="rg">RG <span class="obrig">*</span></label>
-          <input type="text" id="rg" name="rg" required>
         </div>
         <div class="c3">
           <label class="rotulo" for="cpf">CPF <span class="obrig">*</span></label>
@@ -478,6 +485,16 @@
           <input type="file" id="anexoCertidao" name="anexoCertidao" required accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
         </div>
       </div>
+    </section>
+
+    <!-- LGPD -->
+    <section class="secao lgpd" aria-labelledby="tituloLgpd">
+      <h2 id="tituloLgpd">Proteção de Dados Pessoais – LGPD</h2>
+      <p>Em conformidade com a Lei nº 13.709/2018 (LGPD), os dados e documentos fornecidos serão utilizados para processos de contratação de prestação de serviços, realização de pagamentos e cumprimento de obrigações legais, garantindo sigilo, segurança e acesso restrito às pessoas autorizadas.</p>
+      <label class="aceite" for="aceiteLgpd">
+        <input type="checkbox" id="aceiteLgpd" name="aceiteLgpd" value="Sim" required>
+        <span>Declaro estar ciente da utilização e proteção dos meus dados pessoais conforme a legislação vigente. <span class="obrig">*</span></span>
+      </label>
     </section>
 
     <div class="acoes">
@@ -1155,6 +1172,12 @@
     });
 
     form.querySelectorAll('input[type="file"]').forEach(i => i.addEventListener('change', validarArquivos));
+
+    // Mensagem em português para a caixa da LGPD, qualquer que seja o idioma do navegador
+    const lgpd = $('aceiteLgpd');
+    const avisoLgpd = () => lgpd.setCustomValidity(lgpd.checked ? '' : 'Marque esta caixa para declarar ciência sobre o uso dos seus dados e poder enviar.');
+    lgpd.addEventListener('change', avisoLgpd);
+    avisoLgpd();
 
     form.addEventListener('submit', async e => {
       e.preventDefault();
